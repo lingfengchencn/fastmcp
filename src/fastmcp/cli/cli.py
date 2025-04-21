@@ -181,12 +181,19 @@ def version(ctx: Context):
     if ctx.resilient_parsing:
         return
 
+    
+    try:
+        fastmcp_path = f"~/{Path(__file__).resolve().parents[3].relative_to(Path.home())}"
+    except ValueError:
+        # 如果无法计算相对路径，则使用绝对路径
+        fastmcp_path = str(Path(__file__).resolve().parents[3])
+
     info = {
         "FastMCP version": fastmcp.__version__,
         "MCP version": importlib.metadata.version("mcp"),
         "Python version": platform.python_version(),
         "Platform": platform.platform(),
-        "FastMCP root path": f"~/{Path(__file__).resolve().parents[3].relative_to(Path.home())}",
+        "FastMCP root path": fastmcp_path,
     }
 
     g = Table.grid(padding=(0, 1))
